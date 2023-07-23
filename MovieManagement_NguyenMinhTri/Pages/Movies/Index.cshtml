@@ -1,0 +1,112 @@
+﻿@page
+@model MovieManagement_NguyenMinhTri.Pages.Movies.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+
+<form asp-page="index" method="get">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-actions no-color">
+        <p>
+            <select asp-for="SearchField" asp-items="ViewBag.SearchField"></select>
+            <input asp-for="SearchString" />
+            <input type="submit" value="Search" class="btn btn-primary" /> |
+            <a asp-page="index">Back to full list</a>
+        </p>
+    </div>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Movie[0].MovieId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Movie[0].MovieName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Movie[0].ActorName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Movie[0].Duration)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Movie[0].DirectorName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Movie[0].CreatedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Movie[0].UpdatedAt)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Movie)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MovieId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MovieName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ActorName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Duration)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DirectorName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedAt)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UpdatedAt)
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.MovieId">Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@item.MovieId">Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.MovieId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@{
+    var prevDisabled = !Model.Movie.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.Movie.HasNextPage ? "disabled" : "";
+}
+
+<a asp-page="index"
+   asp-route-pageIndex="@(Model.Movie.PageIndex - 1)"
+   asp-route-SearchString="@Model.SearchString"
+   asp-route-SearchField="@Model.SearchField"
+   class="btn btn-primary @prevDisabled">
+    Previous
+</a>
+<a asp-page="index"
+   asp-route-pageIndex="@(Model.Movie.PageIndex + 1)"
+   asp-route-SearchString="@Model.SearchString"
+   asp-route-SearchField="@Model.SearchField"
+   class="btn btn-primary @nextDisabled">
+    Next
+</a>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
